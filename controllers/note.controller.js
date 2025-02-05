@@ -3,10 +3,7 @@ const { NoteModel } = require("../models/index");
 const getUserNotes = async (req, res) => {
   try {
     const user = req.user;
-    if (!user) {
-      throw new Error("User not found");
-    }
-    const notes = await NoteModel.find({ addedBy: user.id });
+    const notes = await NoteModel.find({ addedBy: user });
     res.json(notes).status(200);
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -18,13 +15,38 @@ const addNewNote = async (req, res) => {
     if (!user) {
       throw new Error("User not found");
     }
-    const payload = { ...req.body, addedBy: user.id };
+
+    // Extract body fields
+    const { title, description } = req.body;
+
+    // Initialize payload
+    const payload = {
+      title,
+      description,
+      addedBy: user,
+    };
+
+    // Check if images were uploaded
+    if (req.files && req.files.images) {
+      payload.images = req.files.images.map(
+        (file) => "/uploads/notes/" + file.filename
+      );
+    }
+
+    // Check if audio was uploaded
+    if (req.files && req.files.audio) {
+      payload.audio = "/uploads/notes/" + req.files.audio[0].filename;
+    }
+
+    // Save note to DB
     const note = new NoteModel(payload);
     await note.save();
 
-    return res
-      .status(201)
-      .json({ status: true, message: "Note added successfully !" });
+    return res.status(201).json({
+      status: true,
+      message: "Note added successfully!",
+      note,
+    });
   } catch (err) {
     return res.status(500).json({ error: err.message, status: false });
   }
@@ -38,7 +60,7 @@ const updateNote = async (req, res) => {
     }
 
     const note = await NoteModel.findByIdAndUpdate(
-      { _id: req.params.id, addedBy: user.id },
+      { _id: req.params.id, addedBy: user },
       req.body,
       {
         new: true,
@@ -68,7 +90,7 @@ const deleteNote = async (req, res) => {
 
     const note = await NoteModel.findOneAndDelete({
       _id: req.params.id,
-      addedBy: user.id,
+      addedBy: user,
     });
     if (!note) {
       return res.status(404).json({ message: "Note not found" });

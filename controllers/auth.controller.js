@@ -16,15 +16,17 @@ const Login = async (req, res) => {
     }
     const payload = {
       id: user._id,
-      username: user.username,
-      profilePic: user.profile_pic,
-      email: user.email,
     };
     const token = jwt.sign(payload, process.env.JWT_SECRET);
     res.status(200).json({
       token,
       message: "Login successful",
-      user: payload,
+      user: {
+        id: user._id,
+        username: user.username,
+        profile_pic: user.profile_pic,
+        email: user.email,
+      },
     });
   } catch (error) {
     res.status(400).json({ message: error.message });
@@ -38,7 +40,7 @@ const Register = async (req, res) => {
     if (user) {
       throw new Error("User already exists");
     }
-    const profile_pic = req.file;
+    const profile_pic = "/uploads/users/" + req.file.filename;
     const hashedPassword = await bcrypt.hash(password, 10);
     const newUser = new AuthModel({
       username,

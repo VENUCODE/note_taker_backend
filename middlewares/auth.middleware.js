@@ -5,7 +5,10 @@ const authMiddleware = (req, res, next) => {
 
   if (!token) {
     return res
-      .json({ message: "Unauthorized Access 1", status: false })
+      .json({
+        message: "Unauthorized Access 1",
+        status: false,
+      })
       .status(401);
   }
 
@@ -24,7 +27,8 @@ const authMiddleware = (req, res, next) => {
           .status(401);
       }
     }
-    req.user = decoded.user;
+    console.log(decoded);
+    req.user = decoded.id;
     next();
   });
 };

@@ -10,7 +10,7 @@ const NoteSchema = new Schema(
   },
   { strict: false, timestamps: true }
 );
-const NoteModel = mongoose.model("Laptop", NoteSchema);
+const NoteModel = mongoose.model("notes", NoteSchema);
 
 const AuthSchema = new Schema(
   {
@@ -20,6 +20,6 @@ const AuthSchema = new Schema(
   },
   { strict: false, timestamps: true, collection: "auth" }
 );
-const AuthModel = mongoose.model("Auth", AuthSchema);
+const AuthModel = mongoose.model("auth", AuthSchema);
 
 module.exports = { NoteModel, AuthModel };

@@ -1,5 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const path = require("path");
 const dotenv = require("dotenv");
 dotenv.config({ path: ".env" });
 
@@ -17,7 +18,10 @@ app.use(
     optionsSuccessStatus: 200,
   })
 );
-app.use(express.json());
+
+app.use(express.json({ limit: "50mb" }));
+app.use(express.urlencoded({ extended: true, limit: "50mb" }));
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 app.use("/auth", authRoutes);
 app.use("/note", authMiddleware, noteRoutes);
