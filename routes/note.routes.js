@@ -3,6 +3,8 @@ const {
   getUserNotes,
   addNewNote,
   updateNote,
+  getUserFavourites,
+  addMorePhotos,
   deleteNote,
 } = require("../controllers/note.controller");
 const uploadFiles = require("../middlewares/filehandle.middleware");
@@ -13,6 +15,12 @@ const handleFileUpload = uploadFiles("notes").fields([
 
 router.post("/add-new", handleFileUpload, addNewNote);
 router.get("/getall", getUserNotes);
+router.patch(
+  "/note/upload-photos/:id",
+  uploadFiles("notes").array("images", 5),
+  addMorePhotos
+);
+router.get("/getfavs", getUserFavourites);
 router.patch("/update/:id", updateNote);
 router.delete("/delete/:id", deleteNote);
 
