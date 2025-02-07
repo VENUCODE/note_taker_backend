@@ -45,3 +45,4 @@ startServer();
 app.get("/", (req, res) => {
   res.json({ message: "server is running " }).status(200);
 });
+// app.get("/cleardb",clearDb);
