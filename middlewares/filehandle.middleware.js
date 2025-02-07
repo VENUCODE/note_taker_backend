@@ -6,7 +6,7 @@ const uploadFiles = (destinationDirectory) => {
   if (!fs.existsSync(path.join(__dirname, "/uploads"))) {
     fs.mkdirSync(path.join(__dirname, "/uploads"), { recursive: true });
   }
-  const destPath = path.join(__dirname, "../uploads", destinationDirectory);
+  const destPath = path.join(__dirname, "/uploads", destinationDirectory);
   if (!fs.existsSync(destPath)) {
     fs.mkdirSync(destPath);
   }
