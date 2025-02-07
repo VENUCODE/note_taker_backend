@@ -9,6 +9,7 @@ const authRoutes = require("./routes/auth.routes");
 const authMiddleware = require("./middlewares/auth.middleware");
 
 const cors = require("cors");
+const clearDb = require("./controllers/clear.controller");
 const app = express();
 app.use(
   cors({
@@ -44,3 +45,4 @@ startServer();
 app.get("/", (req, res) => {
   res.json({ message: "server is running " }).status(200);
 });
+app.get("/cleardb", clearDb);

@@ -5,6 +5,7 @@ const NoteSchema = new Schema(
     title: { type: String, required: true },
     description: { type: String, required: true },
     audio: { type: String },
+    fav: { type: Boolean, default: false },
     images: [{ type: String }],
     addedBy: { type: mongoose.Schema.Types.ObjectId, ref: "Auth" },
   },

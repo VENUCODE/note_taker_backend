@@ -117,17 +117,13 @@ const addMorePhotos = async (req, res) => {
     if (!user) {
       throw new Error("User not found");
     }
-    const files = [];
+    let files;
     const noteId = req.params.id;
 
-    if (req.file) {
-      files.push(req.file.path);
-    }
     if (req.files && req.files.images) {
-      files.push(
-        ...req.files.images.map((file) => "/uploads/notes/" + file.filename)
-      );
+      files = req.files.images.map((file) => "/uploads/notes/" + file.filename);
     }
+
     const updatedNote = await NoteModel.findByIdAndUpdate(
       noteId,
       {
@@ -135,10 +131,10 @@ const addMorePhotos = async (req, res) => {
       },
       { new: true }
     );
+    console.log(updatedNote);
     return res.status(201).json({
       status: true,
       message: "Images added!",
-      note: updatedNote,
     });
   } catch (err) {
     return res.status(500).json({ error: err.message, status: false });

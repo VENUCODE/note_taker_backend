@@ -15,11 +15,7 @@ const handleFileUpload = uploadFiles("notes").fields([
 
 router.post("/add-new", handleFileUpload, addNewNote);
 router.get("/getall", getUserNotes);
-router.patch(
-  "/note/upload-photos/:id",
-  uploadFiles("notes").array("images", 5),
-  addMorePhotos
-);
+router.patch("/upload-photos/:id", handleFileUpload, addMorePhotos);
 router.get("/getfavs", getUserFavourites);
 router.patch("/update/:id", updateNote);
 router.delete("/delete/:id", deleteNote);
