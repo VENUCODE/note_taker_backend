@@ -8,7 +8,7 @@ const Login = async (req, res) => {
     const { email, password } = req.body;
     const user = await AuthModel.findOne({ email });
     if (!user) {
-      throw new Error("Invalid credentials");
+      throw new Error("Register before login");
     }
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
